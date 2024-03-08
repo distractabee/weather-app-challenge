@@ -8,4 +8,15 @@ function submitButtonEvent(event) {
     var userCity = city.value;
     event.preventDefault();
 
+    if (!userCity) {
+        alert("Please enter a city name!");
+        return;
+    } else {
+        // format the user input to make first letter of each word upper case for grammar!!!
+        userCity = userCity.toLowerCase();
+        const upperCaseInput = userCity.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+       saveSearches(upperCaseInput);
+       populateSearchHistory();
+       document.getElementById("userInput").value = null;
+    }
 }
