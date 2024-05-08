@@ -1,2 +1,27 @@
 /* headings font-family: 'Bebas Neue', sans-serif;
  body font-family: 'Urbanist', sans-serif; */
+ :root {
+    --primary: #a4dbe8;
+    --secondary: #5f909c;
+    --tertiary: #9C734F;
+    --light: #fff;
+    --dark: #000;
+    --error: rgb(228, 46, 1);
+    --spacing-one: calc(1rem * 0.5);
+    --spacing-two: calc(1rem);
+ }
+
+ body {
+    font-family: 'Urbanist', sans-serif;
+ }
+
+ h1,
+ h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    background-color: var(--primary);
+    color: var(--tertiary);
+    border-radius: 8px;
+    text-align: center;
+    font-size: x-large;
+    padding: var(--spacing-two)
+ }

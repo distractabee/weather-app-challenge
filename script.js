@@ -29,6 +29,31 @@ function saveSearches(upperCaseInput) {
         storedData = []
         storedData.push(upperCaseInput)
     } else {
-        
+        let filteredData = storedData.filter(data => data.toLowerCase() === upperCaseInput.toLowerCase())
+        if (filteredData.length === 0) {
+            storedData.push(upperCaseInput)
+        }
+    };
+    localStorage.setItem("city", JSON.stringify(storedData))
+};
+
+function populateSearchHistory() {
+    document.getElementById('previous-searches').innerHTML = "";
+    let storedData = JSON.parse(localStorage.getItem('city'));
+    let searchHistoryDiv = document.createElement('div');
+
+    if (storedData) {
+        for (var i = storedData.length - 1; i >= 0; i--) {
+            var btn = document.createElement('button');
+            btn.innerHTML = storedData[i]
+            btn.className = "search-history-btn"
+            btn.addEventListener("click", function (event) {
+                event.preventDefault();
+                let cityName = event.target.innerHTML;
+                searchCoordinates(cityName);
+            })
+            searchHistoryDiv.append(btn)
+        }
     }
-}
+    document.getElementById('previous-searches').append(searchHistoryDiv)
+};
