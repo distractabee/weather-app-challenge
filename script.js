@@ -21,6 +21,8 @@ function submitButtonEvent(event) {
        populateSearchHistory();
        document.getElementById("userInput").value = null;
     }
+
+    searchCoordinates(userCity);
 }
 
 function saveSearches(upperCaseInput) {
@@ -57,3 +59,71 @@ function populateSearchHistory() {
     }
     document.getElementById('previous-searches').append(searchHistoryDiv)
 };
+
+function searchCoordinates(userCity) {
+    var coordinatesUrl = weatherRootUrl + "/geo/1.0/direct?q=" + userCity + "&limit=1&appid=" + openWeatherAPIKey
+
+    fetch(coordinatesUrl)
+    .then(response => response.json())
+    .then(data => {
+        let lat = data[0].lat.toFixed(2);
+        let lon = data[0].lon.toFixed(2);
+        searchWeatherApi(lat, lon);
+    })
+    .catch(function (error) {
+        alert('There has been an error. Please try again.');
+        console.log(error);
+    });
+};
+
+function searchWeatherApi(lat, lon) {
+    var weatherUrl = weatherRootUrl + "/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + openWeatherAPIKey + "&units=imperial"
+
+    fetch(weatherUrl)
+    .then(response => response.json())
+    .then(data => {
+        displayWeather(data);
+        console.log(data);
+    })
+    .catch(function(error) {
+        alert('There has been an error. Please try again.');
+        console.log(error)
+    });
+};
+
+function displayWeather(data) {
+    let cityName = data.city.name;
+    document.getElementById("city-name").innerHTML = cityName;
+
+    document.getElementById("current-weather").innerHTML = "";
+    document.getElementById("five-day-forecast").innerHTML = "";
+
+    for (var i = -1; i <= data.list.length; i +- 8) {
+        console.log(i);
+        let index;
+        if (i === -1) {
+            index = i + 1
+        } else {
+            index = i
+        }
+        
+        var iconUrl = weatherRootUrl + `/img/w/${forecast.weather[0].icon}.png`;
+        var iconDescription = forecast.weather[0].description;
+        var tempF = forecast.main.temp;
+        var humidity = forecast.main.humidity;
+        var windSpeed = forecast.wind.speed;
+        
+        if (i === -1) {
+            currentText = 
+            `
+            <div>
+            <img src=${iconUrl} alt=${iconDescription}
+            <p>${Date.toDateString()}</p>
+            <p>Temp: ${tempF}</p>
+            <p>Humidity: ${humidity}</p>
+            <p>Wind Speed: ${windSpeed}</p>
+            </div>`
+        }
+    }
+
+}
